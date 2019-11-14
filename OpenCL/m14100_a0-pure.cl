@@ -841,7 +841,7 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     // for (int i =0;i<2;i++){
         // u32_to_hex(iv[i],hex_digits);
 
-    printf("iv[0]:%c%c,%c%c,%c%c,%c%c\n",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
+    printf("data[0]:%u%u,%u%u,%u%u,%u%u\n",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
     // }
 
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
