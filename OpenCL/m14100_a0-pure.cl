@@ -819,6 +819,14 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
 
     u32 z = 0;
 
+
+    //iv  is a u32 array need to convert to hex and print it 
+    u8 hex_digits[8];
+    for (int i =0;i<2;i++){
+        u32_to_hex(iv[i],hex_digits);
+        printf("%c%c%c%c%c%c%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
+    }
+
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
 }
