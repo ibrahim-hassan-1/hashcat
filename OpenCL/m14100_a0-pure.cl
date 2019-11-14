@@ -821,11 +821,8 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
 
 
     //iv  is a u32 array need to convert to hex and print it 
-    void u32_to_hex (const u32 v, u8 hex[8])
-    {
-      
-    }
-    u8 hex_digits[8];
+
+    u8 hex_digits[8]={0,0,0,0,0,0,0,0};
     const u8 tbl[0x10] =
       {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
