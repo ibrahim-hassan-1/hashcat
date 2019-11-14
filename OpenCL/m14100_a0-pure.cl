@@ -823,26 +823,29 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     //iv  is a u32 array need to convert to hex and print it 
     void u32_to_hex (const u32 v, u8 hex[8])
     {
-      const u8 tbl[0x10] =
+      
+    }
+    u8 hex_digits[8];
+    const u8 tbl[0x10] =
       {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         'a', 'b', 'c', 'd', 'e', 'f',
       };
 
-      hex[1] = tbl[v >>  0 & 15];
-      hex[0] = tbl[v >>  4 & 15];
-      hex[3] = tbl[v >>  8 & 15];
-      hex[2] = tbl[v >> 12 & 15];
-      hex[5] = tbl[v >> 16 & 15];
-      hex[4] = tbl[v >> 20 & 15];
-      hex[7] = tbl[v >> 24 & 15];
-      hex[6] = tbl[v >> 28 & 15];
-    }
-    u8 hex_digits[8];
-    for (int i =0;i<2;i++){
-        u32_to_hex(iv[i],hex_digits);
-        printf("%c%c%c%c%c%c%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
-    }
+      hex_digits[1] = tbl[iv[0] >>  0 & 15];
+      hex_digits[0] = tbl[iv[0] >>  4 & 15];
+      hex_digits[3] = tbl[iv[0] >>  8 & 15];
+      hex_digits[2] = tbl[iv[0] >> 12 & 15];
+      hex_digits[5] = tbl[iv[0] >> 16 & 15];
+      hex_digits[4] = tbl[iv[0] >> 20 & 15];
+      hex_digits[7] = tbl[iv[0] >> 24 & 15];
+      hex_digits[6] = tbl[iv[0] >> 28 & 15];
+    
+    // for (int i =0;i<2;i++){
+        // u32_to_hex(iv[i],hex_digits);
+
+    printf("iv[0]:%c%c,%c%c,%c%c,%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
+    // }
 
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
