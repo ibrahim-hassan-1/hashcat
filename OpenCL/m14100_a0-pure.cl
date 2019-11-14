@@ -829,14 +829,14 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
         'a', 'b', 'c', 'd', 'e', 'f',
       };
 
-      hex_digits[1] = tbl[iv[0] >>  0 & 15];
-      hex_digits[0] = tbl[iv[0] >>  4 & 15];
-      hex_digits[3] = tbl[iv[0] >>  8 & 15];
-      hex_digits[2] = tbl[iv[0] >> 12 & 15];
-      hex_digits[5] = tbl[iv[0] >> 16 & 15];
-      hex_digits[4] = tbl[iv[0] >> 20 & 15];
-      hex_digits[7] = tbl[iv[0] >> 24 & 15];
-      hex_digits[6] = tbl[iv[0] >> 28 & 15];
+      hex_digits[1] = tbl[data[0] >>  0 & 15];
+      hex_digits[0] = tbl[data[0] >>  4 & 15];
+      hex_digits[3] = tbl[data[0] >>  8 & 15];
+      hex_digits[2] = tbl[data[0] >> 12 & 15];
+      hex_digits[5] = tbl[data[0] >> 16 & 15];
+      hex_digits[4] = tbl[data[0] >> 20 & 15];
+      hex_digits[7] = tbl[data[0] >> 24 & 15];
+      hex_digits[6] = tbl[data[0] >> 28 & 15];
     
     // for (int i =0;i<2;i++){
         // u32_to_hex(iv[i],hex_digits);
