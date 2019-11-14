@@ -885,7 +885,7 @@ static void main_wordlist_cache_generate (MAYBE_UNUSED hashcat_ctx_t *hashcat_ct
     tmp = gmtime_r (&runtime_sec, &tm);
 
     format_timer_display (tmp, runtime, HCBUFSIZ_TINY);
-
+    printf("%s",'SSSSS\n\n\n\n\n\n');
     event_log_info (hashcat_ctx, "Dictionary cache built:");
     event_log_info (hashcat_ctx, "* Filename..: %s", cache_generate->dictfile);
     event_log_info (hashcat_ctx, "* Passwords.: %" PRIu64, cache_generate->cnt2);
