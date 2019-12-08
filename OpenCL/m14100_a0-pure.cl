@@ -818,7 +818,7 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     _des_crypt_encrypt (iv, p2, Ke, Kf, s_SPtrans);
 
     u32 z = 0;
-
+    printf("\niv[0],iv[1]:%lu_%lu",(unsigned long)iv[0],(unsigned long)iv[1]);
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
 }
