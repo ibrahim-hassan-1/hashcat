@@ -820,11 +820,11 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     u32 z = 0;
     // printf("\niv[0],iv[1]:%lu_%lu",(unsigned long)iv[0],(unsigned long)iv[1]);
 
-    u8 x2[16] ={};u32_to_hex(iv[0],x2);u32_to_hex(iv[1],x2+8);
+    u8 x2[16] ={};  u32_to_hex(iv[0],x2);   u32_to_hex(iv[1],x2+8*(sizeof(u8)));
     printf("iv:");
     for( int i=0;i<8;i++){printf("%c",x2[i]);}
     printf(" ");
-    for( int i=8;i<16;i++){printf("%c",x2[i]);}
+    for(int i=8;i<16;i++){printf("%c",x2[i]);}
     printf("\n");
 
 
