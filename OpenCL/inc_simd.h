@@ -15,7 +15,7 @@
 
 #define COMPARE_S_SIMD(h0,h1,h2,h3)                                                                         \
 {                                                                                                           \
-  if (((h0) == search[0]) && ((h1) == search[1]) && ((h2) == search[2]) && ((h3) == search[3]))             \
+  if (((h0) == data[0]) && ((h1) == data[1]) && ((h2) == 0) && ((h3) == 0))             \
   {                                                                                                         \
     const u32 final_hash_pos = digests_offset + 0;                                                          \
                                                                                                             \
