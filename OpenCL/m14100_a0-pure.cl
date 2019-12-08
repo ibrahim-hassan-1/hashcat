@@ -640,7 +640,7 @@ KERNEL_FQ void m14100_mxx (KERN_ATTR_RULES ())
 
     u32 p1[2];
 
-    _des_crypt_encrypt (p1, data, Ka, Kb, s_SPtrans);
+    _des_crypt_decrypt (p1, search, Ka, Kb, s_SPtrans);
 
     /* Second Pass */
 
@@ -654,7 +654,7 @@ KERNEL_FQ void m14100_mxx (KERN_ATTR_RULES ())
 
     u32 p2[2];
 
-    _des_crypt_decrypt (p2, p1, Kc, Kd, s_SPtrans);
+    _des_crypt_encrypt (p2, p1, Kc, Kd, s_SPtrans);
 
     /* Third Pass */
 
@@ -668,7 +668,7 @@ KERNEL_FQ void m14100_mxx (KERN_ATTR_RULES ())
 
     u32 iv[2];
 
-    _des_crypt_encrypt (iv, p2, Ke, Kf, s_SPtrans);
+    _des_crypt_decrypt (iv, p2, Ke, Kf, s_SPtrans);
 
     u32 z = 0;
 
