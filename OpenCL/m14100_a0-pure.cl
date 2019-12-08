@@ -844,7 +844,7 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     // printf("data[0]:%u,%u,%u,%u,%u,%u,%u,%u\n",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
     // }
 
-    printf('iv[0],iv[1]:%d %d',iv[0],iv[1]);
+    // printf('iv[0],iv[1]:%d%_%d',iv[0],iv[1]);
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
 }
