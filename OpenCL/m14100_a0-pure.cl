@@ -845,6 +845,7 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     // }
 
     printf("iv[0],iv[1]:%lu_%lu\n",(unsigned long)iv[0],(unsigned long)iv[1]);
+    printf("data[0],data[1]:%lu_%lu\n",(unsigned long)data[0],(unsigned long)data[1]);
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
 }
