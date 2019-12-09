@@ -860,17 +860,17 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
     // printf("\ndata[0]:%c%c%c%c%c%c%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
     // }
 
-    printf("\niv[0],iv[1]:%lu_%lu",(unsigned long)iv[0],(unsigned long)iv[1]);
-    printf("\ndata[0],data[1]:%lu_%lu",(unsigned long)data[0],(unsigned long)data[1]);
+    // printf("\niv[0],iv[1]:%lu_%lu",(unsigned long)iv[0],(unsigned long)iv[1]);
+    // printf("\ndata[0],data[1]:%lu_%lu",(unsigned long)data[0],(unsigned long)data[1]);
 
-    #DES_FP
+    //DES_FP
     PERM_OP_custom (iv[1], iv[0],  1, 0x55555555);
     PERM_OP_custom (iv[0], iv[1],  8, 0x00ff00ff);
     PERM_OP_custom (iv[1], iv[0],  2, 0x33333333);
     PERM_OP_custom (iv[0], iv[1], 16, 0x0000ffff);
     PERM_OP_custom (iv[1], iv[0],  4, 0x0f0f0f0f);
 
-    printf_8bytes("iv_after",iv[0],iv[1]);
+    // printf_8bytes("iv_after",iv[0],iv[1]);
     // int valid_hex = is_valid_digit_string((u8*) iv,8);
 
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
