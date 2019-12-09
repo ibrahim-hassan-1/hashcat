@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+import fileinput,hashlib,sys,binascii
+
+S = open('./3des_keys.dict' , 'w')
+for line in fileinput.input():
+	a=line.strip()
+	hashed = hashlib.sha1(bytes(a,encoding='UTF-8')).digest()
+	hashed = hashed[:16] + hashed[0:8]
+	S.buffer.write(binascii.hexlify(hashed)+b'\n')
