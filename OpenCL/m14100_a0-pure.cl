@@ -15,6 +15,38 @@
 #include "inc_simd.cl"
 #endif
 
+#define PERM_OP_custom(a,b,n,m) \
+{                        \
+  u32x t;                \
+  t = a >> n;            \
+  t = t ^ b;             \
+  t = t & m;             \
+  b = b ^ t;             \
+  t = t << n;            \
+  a = a ^ t;             \
+}
+
+
+const u8 tbl[0x10] ={'0', '1', '2', '3', '4', '5', '6', '7', '8', '9','a', 'b', 'c', 'd', 'e', 'f',};
+#define printf_u32(a)                       \
+{                                           \
+    printf("%c",tbl[a >>  4 & 15]);         \
+    printf("%c",tbl[a >>  0 & 15]);         \
+    printf("%c",tbl[a >> 12 & 15]);         \
+    printf("%c",tbl[a >>  8 & 15]);         \
+    printf("%c",tbl[a >> 20 & 15]);         \
+    printf("%c",tbl[a >> 16 & 15]);         \
+    printf("%c",tbl[a >> 28 & 15]);         \
+    printf("%c",tbl[a >> 24 & 15]);         \
+}
+
+#define printf_8bytes(name , a , b)                                                     \
+{                                                                                       \
+    printf("%s: ",name);printf_u32(a);printf(" ");printf_u32(b);printf("\n");           \
+}
+
+
+
 #define PERM_OP(a,b,tt,n,m) \
 {                           \
   tt = a >> n;              \
@@ -822,30 +854,25 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_RULES ())
 
     //iv  is a u32 array need to convert to hex and print it 
 
-    u8 hex_digits[8]={0,0,0,0,0,0,0,0};
-    const u8 tbl[0x10] =
-      {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        'a', 'b', 'c', 'd', 'e', 'f',
-      };
-
-      hex_digits[1] = tbl[data[0] >>  0 & 15];
-      hex_digits[0] = tbl[data[0] >>  4 & 15];
-      hex_digits[3] = tbl[data[0] >>  8 & 15];
-      hex_digits[2] = tbl[data[0] >> 12 & 15];
-      hex_digits[5] = tbl[data[0] >> 16 & 15];
-      hex_digits[4] = tbl[data[0] >> 20 & 15];
-      hex_digits[7] = tbl[data[0] >> 24 & 15];
-      hex_digits[6] = tbl[data[0] >> 28 & 15];
-    
     // for (int i =0;i<2;i++){
         // u32_to_hex(iv[i],hex_digits);
 
-    printf("\ndata[0]:%c%c%c%c%c%c%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
+    // printf("\ndata[0]:%c%c%c%c%c%c%c%c",hex_digits[0],hex_digits[1],hex_digits[2],hex_digits[3],hex_digits[4],hex_digits[5],hex_digits[6],hex_digits[7]);
     // }
 
     printf("\niv[0],iv[1]:%lu_%lu",(unsigned long)iv[0],(unsigned long)iv[1]);
     printf("\ndata[0],data[1]:%lu_%lu",(unsigned long)data[0],(unsigned long)data[1]);
+
+    #DES_FP
+    PERM_OP_custom (iv[1], iv[0],  1, 0x55555555);
+    PERM_OP_custom (iv[0], iv[1],  8, 0x00ff00ff);
+    PERM_OP_custom (iv[1], iv[0],  2, 0x33333333);
+    PERM_OP_custom (iv[0], iv[1], 16, 0x0000ffff);
+    PERM_OP_custom (iv[1], iv[0],  4, 0x0f0f0f0f);
+
+    printf_8bytes("iv_after",iv[0],iv[1]);
+    // int valid_hex = is_valid_digit_string((u8*) iv,8);
+
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
 }

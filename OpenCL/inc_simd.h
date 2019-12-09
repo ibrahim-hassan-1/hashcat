@@ -15,7 +15,13 @@
 
 #define COMPARE_S_SIMD(h0,h1,h2,h3)                                                                         \
 {                                                                                                           \
-  if (((h0) == data[0]) && ((h1) == data[1]) && ((h2) == 0) && ((h3) == 0))             \
+  bool valid_hex=true;                                                                                      \
+  for (size_t i = 0; i < 8; i++){                                                                           \
+    const u8 c = *(((u8*)&h0)+i);                                                                           \
+    if ((c < '0') || (c > '9')){valid_hex=false;}                                                           \
+  }                                                                                                         \
+                                                                                                            \
+  if (valid_hex)                                                                                            \
   {                                                                                                         \
     const u32 final_hash_pos = digests_offset + 0;                                                          \
                                                                                                             \
