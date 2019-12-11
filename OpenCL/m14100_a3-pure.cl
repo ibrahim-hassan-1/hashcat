@@ -14,6 +14,20 @@
 #include "inc_hash_sha1.cl"
 #endif
 
+u32 byte_swap_32 (const u32 n)
+{
+  #if defined (_MSC_VER)
+  return _byteswap_ulong (n);
+  #elif defined (__clang__) || defined (__GNUC__)
+  return __builtin_bswap32 (n);
+  #else
+  return (n & 0xff000000) >> 24
+       | (n & 0x00ff0000) >>  8
+       | (n & 0x0000ff00) <<  8
+       | (n & 0x000000ff) << 24;
+  #endif
+}
+
 #define PERM_OP_custom(a,b,n,m) \
 {                        \
   u32x t;                \
