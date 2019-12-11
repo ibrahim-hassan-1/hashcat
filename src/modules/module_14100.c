@@ -88,14 +88,14 @@ u32 module_salt_max (MAYBE_UNUSED const hashconfig_t *hashconfig, MAYBE_UNUSED c
 
 u32 module_pw_min (MAYBE_UNUSED const hashconfig_t *hashconfig, MAYBE_UNUSED const user_options_t *user_options, MAYBE_UNUSED const user_options_extra_t *user_options_extra)
 {
-  const u32 pw_min = 24; // Underlaying 3DES min
+  const u32 pw_min = 1; // Underlaying 3DES min
 
   return pw_min;
 }
 
 u32 module_pw_max (MAYBE_UNUSED const hashconfig_t *hashconfig, MAYBE_UNUSED const user_options_t *user_options, MAYBE_UNUSED const user_options_extra_t *user_options_extra)
 {
-  const u32 pw_max = 24; // Underlaying 3DES max
+  const u32 pw_max = 10; // Underlaying 3DES max
 
   return pw_max;
 }

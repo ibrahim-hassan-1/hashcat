@@ -680,20 +680,32 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
    * loop
    */
 
-  u32 w0l = w[0];
-
-  u32 w1 = w[1];
+  u32x w0l = w[0];
 
   for (u32 il_pos = 0; il_pos < il_cnt; il_pos += VECT_SIZE)
   {
-    const u32x w0r = ix_create_bft (bfs_buf, il_pos);
-
+    const u32x w0r = words_buf_r[il_pos / VECT_SIZE];
     const u32x w0 = w0l | w0r;
+
+    w[0] = w0;
+
+    sha1_ctx_vector_t ctx;
+
+    sha1_init_vector (&ctx);
+
+    sha1_update_vector (&ctx, w, pw_len);
+
+    sha1_final_vector (&ctx);
+
+    const u32x r0 = ctx.h[0];
+    const u32x r1 = ctx.h[1];
+    const u32x r2 = ctx.h[2];
+    const u32x r3 = ctx.h[3];
 
     /* First Pass */
 
-    const u32x a = (w0);
-    const u32x b = (w1);
+    const u32x a = (r0);
+    const u32x b = (r1);
 
     u32x Ka[16];
     u32x Kb[16];
@@ -711,8 +723,8 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     /* Second Pass */
 
-    const u32x c = (w[2]);
-    const u32x d = (w[3]);
+    const u32x c = (r2);
+    const u32x d = (r3);
 
     u32x Kc[16];
     u32x Kd[16];
@@ -725,8 +737,8 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     /* Third Pass */
 
-    const u32x e = (w[4]);
-    const u32x f = (w[5]);
+    const u32x e = (r0);
+    const u32x f = (r1);
 
     u32x Ke[16];
     u32x Kf[16];
@@ -870,24 +882,12 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_BASIC ())
    * base
    */
 
-  u32 w[16];
+  u32x w[64] = { 0 };
 
-  w[ 0] = pws[gid].i[ 0];
-  w[ 1] = pws[gid].i[ 1];
-  w[ 2] = pws[gid].i[ 2];
-  w[ 3] = pws[gid].i[ 3];
-  w[ 4] = pws[gid].i[ 4];
-  w[ 5] = pws[gid].i[ 5];
-  w[ 6] = 0;
-  w[ 7] = 0;
-  w[ 8] = 0;
-  w[ 9] = 0;
-  w[10] = 0;
-  w[11] = 0;
-  w[12] = 0;
-  w[13] = 0;
-  w[14] = 0;
-  w[15] = 0;
+  for (u32 i = 0, idx = 0; i < pw_len; i += 4, idx += 1)
+  {
+    w[idx] = pws[gid].i[idx];
+  }
 
   const u32 pw_len = pws[gid].pw_len;
 
