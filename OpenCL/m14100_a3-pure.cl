@@ -690,18 +690,18 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     w[0] = w0;
 
-    sha1_ctx_vector_t ctx;
+    sha1_ctx_t ctx;
 
-    sha1_init_vector (&ctx);
+    sha1_init (&ctx);
 
-    sha1_update_vector (&ctx, w, pw_len);
+    sha1_update_swap (&ctx, w, pw_len);
 
-    sha1_final_vector (&ctx);
+    sha1_final (&ctx);
 
-    const u32x r0 = ctx.h[0];
-    const u32x r1 = ctx.h[1];
-    const u32x r2 = ctx.h[2];
-    const u32x r3 = ctx.h[3];
+    const u32x r0 = byte_swap_32(ctx.h[0]);
+    const u32x r1 = byte_swap_32(ctx.h[1]);
+    const u32x r2 = byte_swap_32(ctx.h[2]);
+    const u32x r3 = byte_swap_32(ctx.h[3]);
 
     /* First Pass */
 
