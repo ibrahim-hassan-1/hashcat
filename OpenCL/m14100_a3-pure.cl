@@ -13,6 +13,36 @@
 #include "inc_simd.cl"
 #endif
 
+#define PERM_OP_custom(a,b,n,m) \
+{                        \
+  u32x t;                \
+  t = a >> n;            \
+  t = t ^ b;             \
+  t = t & m;             \
+  b = b ^ t;             \
+  t = t << n;            \
+  a = a ^ t;             \
+}
+
+
+const u8 tbl[0x10] ={'0', '1', '2', '3', '4', '5', '6', '7', '8', '9','a', 'b', 'c', 'd', 'e', 'f',};
+#define printf_u32(a)                       \
+{                                           \
+    printf("%c",tbl[a >>  4 & 15]);         \
+    printf("%c",tbl[a >>  0 & 15]);         \
+    printf("%c",tbl[a >> 12 & 15]);         \
+    printf("%c",tbl[a >>  8 & 15]);         \
+    printf("%c",tbl[a >> 20 & 15]);         \
+    printf("%c",tbl[a >> 16 & 15]);         \
+    printf("%c",tbl[a >> 28 & 15]);         \
+    printf("%c",tbl[a >> 24 & 15]);         \
+}
+
+#define printf_8bytes(name , a , b)                                                     \
+{                                                                                       \
+    printf("%s: ",name);printf_u32(a);printf(" ");printf_u32(b);printf("\n");           \
+}
+
 #define PERM_OP(a,b,tt,n,m) \
 {                           \
   tt = a >> n;              \
@@ -638,7 +668,7 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
    * digest
    */
 
-  const u32 search[4] =
+  u32 search[4] =
   {
     digests_buf[digests_offset].digest_buf[DGST_R0],
     digests_buf[digests_offset].digest_buf[DGST_R1],
@@ -677,7 +707,7 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x p1[2];
 
-    _des_crypt_encrypt (p1, data, Ka, Kb, s_SPtrans);
+    _des_crypt_decrypt (p1, search, Ka, Kb, s_SPtrans);
 
     /* Second Pass */
 
@@ -691,7 +721,7 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x p2[2];
 
-    _des_crypt_decrypt (p2, p1, Kc, Kd, s_SPtrans);
+    _des_crypt_encrypt (p2, p1, Kc, Kd, s_SPtrans);
 
     /* Third Pass */
 
@@ -705,9 +735,16 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x iv[2];
 
-    _des_crypt_encrypt (iv, p2, Ke, Kf, s_SPtrans);
+    _des_crypt_decrypt (iv, p2, Ke, Kf, s_SPtrans);
 
     u32x z = 0;
+
+    //DES_FP
+    PERM_OP_custom (iv[1], iv[0],  1, 0x55555555);
+    PERM_OP_custom (iv[0], iv[1],  8, 0x00ff00ff);
+    PERM_OP_custom (iv[1], iv[0],  2, 0x33333333);
+    PERM_OP_custom (iv[0], iv[1], 16, 0x0000ffff);
+    PERM_OP_custom (iv[1], iv[0],  4, 0x0f0f0f0f);
 
     COMPARE_S_SIMD (iv[0], iv[1], z, z);
   }
