@@ -11,6 +11,7 @@
 #include "inc_platform.cl"
 #include "inc_common.cl"
 #include "inc_simd.cl"
+#include "inc_hash_sha1.cl"
 #endif
 
 #define PERM_OP_custom(a,b,n,m) \
@@ -882,14 +883,14 @@ KERNEL_FQ void m14100_sxx (KERN_ATTR_BASIC ())
    * base
    */
 
+  const u32 pw_len = pws[gid].pw_len;
+
   u32x w[64] = { 0 };
 
   for (u32 i = 0, idx = 0; i < pw_len; i += 4, idx += 1)
   {
     w[idx] = pws[gid].i[idx];
   }
-
-  const u32 pw_len = pws[gid].pw_len;
 
   /**
    * main
