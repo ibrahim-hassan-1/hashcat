@@ -44,7 +44,7 @@
   if (valid_hex)                                                                                            \
     {                                                                                                       \
     printf("valid_hex:%d\n",valid_hex);                                                                     \
-    int digest_pos = find_hash (digest_tp0, digests_cnt, &digests_buf[digests_offset]);                     \
+    int digest_pos = find_hash ({data[0],data[1],0,0}, digests_cnt, &digests_buf[digests_offset]);                     \
                                                                                                             \
     if (digest_pos != -1)                                                                                   \
     { printf("digest_pos:%d\n",digest_pos);                                                                                                      \
