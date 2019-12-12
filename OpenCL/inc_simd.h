@@ -34,7 +34,7 @@
 
 #define COMPARE_M_SIMD(h0,h1,h2,h3)                                                                         \
 {                                                                                                           \
-  const u32 digest_tp0[4] = { data[0], data[1], h2, h3 };                                                   \
+  const u32 digest_tp0[4] = { salt_buf0[0], salt_buf0[1], 0, 0 };                                           \
   bool valid_hex=true;                                                                                      \
   for (size_t i = 0; i < 8; i++){                                                                           \
     const u8 c = *(((u8*)&h0)+i);                                                                           \
