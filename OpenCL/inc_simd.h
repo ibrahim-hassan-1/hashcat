@@ -44,10 +44,10 @@
   if (valid_hex)                                                                                            \
     {                                                                                                       \
     printf("valid_hex:%d\n",valid_hex);                                                                     \
-    int digest_pos = find_hash ({data[0],data[1],0,0}, digests_cnt, &digests_buf[digests_offset]);                     \
+    int digest_pos = find_hash ({data[0],data[1],0,0}, digests_cnt, &digests_buf[digests_offset]);          \
                                                                                                             \
     if (digest_pos != -1)                                                                                   \
-    { printf("digest_pos:%d\n",digest_pos);                                                                                                      \
+    { printf("digest_pos:%d\n",digest_pos);                                                                 \                                     \
       const u32 final_hash_pos = digests_offset + digest_pos;                                               \
                                                                                                             \
       if (atomic_inc (&hashes_shown[final_hash_pos]) == 0)                                                  \
