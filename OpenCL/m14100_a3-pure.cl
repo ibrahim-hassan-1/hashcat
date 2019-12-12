@@ -598,20 +598,33 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
    * loop
    */
 
-  u32 w0l = w[0];
-
-  u32 w1 = w[1];
+  u32x w0l = w[0];
 
   for (u32 il_pos = 0; il_pos < il_cnt; il_pos += VECT_SIZE)
   {
-    const u32x w0r = ix_create_bft (bfs_buf, il_pos);
-
+    const u32x w0r = words_buf_r[il_pos / VECT_SIZE];
     const u32x w0 = w0l | w0r;
+
+    w[0] = w0;
+
+    sha1_ctx_t ctx;
+
+    sha1_init (&ctx);
+
+    sha1_update_swap (&ctx, w, pw_len);
+
+    sha1_final (&ctx);
+
+    const u32x r0 = byte_swap_32(ctx.h[0]);
+    const u32x r1 = byte_swap_32(ctx.h[1]);
+    const u32x r2 = byte_swap_32(ctx.h[2]);
+    const u32x r3 = byte_swap_32(ctx.h[3]);
 
     /* First Pass */
 
-    const u32x a = (w0);
-    const u32x b = (w1);
+    const u32x a = (r0);
+    const u32x b = (r1);
+
 
     u32x Ka[16];
     u32x Kb[16];
@@ -629,8 +642,8 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     /* Second Pass */
 
-    const u32x c = (w[2]);
-    const u32x d = (w[3]);
+    const u32x c = (r2);
+    const u32x d = (r3);
 
     u32x Kc[16];
     u32x Kd[16];
@@ -643,8 +656,8 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     /* Third Pass */
 
-    const u32x e = (w[4]);
-    const u32x f = (w[5]);
+    const u32x e = (r0);
+    const u32x f = (r1);
 
     u32x Ke[16];
     u32x Kf[16];
