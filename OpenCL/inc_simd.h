@@ -37,8 +37,10 @@
   const u32 digest_tp0[4] = { h0, h1, h2, h3 };                                                             \
   bool valid_hex=true;                                                                                      \
   for (size_t i = 0; i < 8; i++){                                                                           \
-  const u8 c = *(((u8*)&h0)+i);                                                                             \
-  if ((c < '0') || (c > '9')){valid_hex=false;}                                                             \
+    const u8 c = *(((u8*)&h0)+i);                                                                           \
+    if ((c < '0') || (c > '9')){valid_hex=false;}                                                           \
+  }                                                                                                         \
+  if (valid_hex)                                                                                            \
   {                                                                                                         \
     int digest_pos = find_hash (digest_tp0, digests_cnt, &digests_buf[digests_offset]);                     \
                                                                                                             \
