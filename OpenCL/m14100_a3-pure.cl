@@ -734,7 +734,7 @@ DECLSPEC void m14100s (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x p1[2];
 
-    _des_crypt_decrypt (p1, search, Ka, Kb, s_SPtrans);
+    _des_crypt_decrypt (p1, data, Ka, Kb, s_SPtrans);
 
     /* Second Pass */
 
