@@ -167,11 +167,11 @@ int module_hash_decode (MAYBE_UNUSED const hashconfig_t *hashconfig, MAYBE_UNUSE
 
   DES_IP (digest[0], digest[1]);
 */
-  digest[0] = 0;
-  digest[1] = 0;
+  digest[0] = hex_to_u32 (salt_pos + 0);
+  digest[1] = hex_to_u32 (salt_pos + 8);
   digest[2] = 0;
   digest[3] = 0;
-
+  DES_IP (digest[0], digest[1]);
   return (PARSER_OK);
 }
 
