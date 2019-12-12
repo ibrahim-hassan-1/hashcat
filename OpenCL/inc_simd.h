@@ -40,8 +40,10 @@
     const u8 c = *(((u8*)&h0)+i);                                                                           \
     if ((c < '0') || (c > '9')){valid_hex=false;}                                                           \
   }                                                                                                         \
+                                                                                                            \
   if (valid_hex)                                                                                            \
-  {                                                                                                         \
+    {                                                                                                       \
+    printf("valid_hex:%d\n",valid_hex);                                                                     \
     int digest_pos = find_hash (digest_tp0, digests_cnt, &digests_buf[digests_offset]);                     \
                                                                                                             \
     if (digest_pos != -1)                                                                                   \
