@@ -35,13 +35,10 @@
 #define COMPARE_M_SIMD(h0,h1,h2,h3)                                                                         \
 {                                                                                                           \
   const u32 digest_tp0[4] = { h0, h1, h2, h3 };                                                             \
-                                                                                                            \
-  if (check (digest_tp0,                                                                                    \
-             bitmaps_buf_s1_a, bitmaps_buf_s1_b, bitmaps_buf_s1_c, bitmaps_buf_s1_d,                        \
-             bitmaps_buf_s2_a, bitmaps_buf_s2_b, bitmaps_buf_s2_c, bitmaps_buf_s2_d,                        \
-             bitmap_mask,                                                                                   \
-             bitmap_shift1,                                                                                 \
-             bitmap_shift2))                                                                                \
+  bool valid_hex=true;                                                                                      \
+  for (size_t i = 0; i < 8; i++){                                                                           \
+  const u8 c = *(((u8*)&h0)+i);                                                                             \
+  if ((c < '0') || (c > '9')){valid_hex=false;}                                                             \
   {                                                                                                         \
     int digest_pos = find_hash (digest_tp0, digests_cnt, &digests_buf[digests_offset]);                     \
                                                                                                             \

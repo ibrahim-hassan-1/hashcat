@@ -625,7 +625,7 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x p1[2];
 
-    _des_crypt_encrypt (p1, data, Ka, Kb, s_SPtrans);
+    _des_crypt_decrypt (p1, data, Ka, Kb, s_SPtrans);
 
     /* Second Pass */
 
@@ -639,7 +639,7 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x p2[2];
 
-    _des_crypt_decrypt (p2, p1, Kc, Kd, s_SPtrans);
+    _des_crypt_encrypt (p2, p1, Kc, Kd, s_SPtrans);
 
     /* Third Pass */
 
@@ -653,7 +653,14 @@ DECLSPEC void m14100m (LOCAL_AS u32 (*s_SPtrans)[64], LOCAL_AS u32 (*s_skb)[64],
 
     u32x iv[2];
 
-    _des_crypt_encrypt (iv, p2, Ke, Kf, s_SPtrans);
+    _des_crypt_decrypt (iv, p2, Ke, Kf, s_SPtrans);
+
+    //DES_FP
+    PERM_OP_custom (iv[1], iv[0],  1, 0x55555555);
+    PERM_OP_custom (iv[0], iv[1],  8, 0x00ff00ff);
+    PERM_OP_custom (iv[1], iv[0],  2, 0x33333333);
+    PERM_OP_custom (iv[0], iv[1], 16, 0x0000ffff);
+    PERM_OP_custom (iv[1], iv[0],  4, 0x0f0f0f0f);
 
     u32x z = 0;
 
@@ -823,26 +830,14 @@ KERNEL_FQ void m14100_mxx (KERN_ATTR_BASIC ())
    * base
    */
 
-  u32 w[16];
-
-  w[ 0] = pws[gid].i[ 0];
-  w[ 1] = pws[gid].i[ 1];
-  w[ 2] = pws[gid].i[ 2];
-  w[ 3] = pws[gid].i[ 3];
-  w[ 4] = pws[gid].i[ 4];
-  w[ 5] = pws[gid].i[ 5];
-  w[ 6] = 0;
-  w[ 7] = 0;
-  w[ 8] = 0;
-  w[ 9] = 0;
-  w[10] = 0;
-  w[11] = 0;
-  w[12] = 0;
-  w[13] = 0;
-  w[14] = 0;
-  w[15] = 0;
-
   const u32 pw_len = pws[gid].pw_len;
+
+  u32x w[64] = { 0 };
+
+  for (u32 i = 0, idx = 0; i < pw_len; i += 4, idx += 1)
+  {
+    w[idx] = pws[gid].i[idx];
+  }
 
   /**
    * main
